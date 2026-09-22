@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Work — South of Somewhere</title>
+  <meta name="description" content="Selected client work and studio films from South of Somewhere. Real stories, different worlds.">
+  <meta property="og:title" content="Work — South of Somewhere">
+  <meta property="og:description" content="Selected client work and studio films from South of Somewhere. Real stories, different worlds.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://southofsomewhere.studio/assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#e9e6de">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/amatic-sc.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/lora-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="South of Somewhere, home">
+      <img src="assets/img/logo-mark.svg" alt="" width="30" height="42">
+      <span>South of Somewhere</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span></button>
+    <nav class="nav-links" id="site-nav" aria-label="Main">
+      <a class="ul" href="index.html">Home</a>
+      <a class="ul" href="work.html" aria-current="page">Work</a>
+      <a class="ul" href="offers.html">Offers</a>
+      <a class="ul" href="contact.html">Contact</a>
+      <a class="btn btn--sm" href="contact.html">Start a project <span class="arr">&rarr;</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <section class="page-head">
+    <div class="wrap">
+      <p class="script script--sm">Selected work</p>
+      <h1 class="h1">Real stories.<br>Different worlds.</h1>
+      <p class="lead">A mix of client work and studio films — united by the same belief: better stories create a more interesting world.</p>
+    </div>
+  </section>
+
+  <section>
+    <!--
+      SWAP OR ADD A FILM: put the file in assets/video/ and edit its .thumb button:
+        data-video="assets/video/x.mp4" (or a YouTube / Vimeo link)   data-ratio="16 / 9" (or "9 / 16")   data-preview="assets/video/x-loop.mp4"
+      data-ratio is the FILM's shape; the still's shape is set by style="--ar:…" on the button, so neither is ever cropped.
+    -->
+    <div class="wrap work-page">
+      <div class="work-layout">
+        <div class="work-col">
+          <article class="film film--mv film--tall" id="brand-mv">
+          <button class="thumb" style="--ar:9 / 16" data-video="assets/video/brand-mv.mp4" data-title="Brand MV" data-ratio="9 / 16" data-preview="assets/video/brand-mv-loop.mp4" aria-label="Play Brand MV"><img src="assets/img/work-brand-mv.jpg" alt="Still from the vertical Brand MV" loading="lazy"><span class="play">Play film</span></button>
+          <div class="caption">
+            <h2 class="h3">Brand MV</h2>
+            <button class="link ul" data-open-film>Watch <span class="arr">&rarr;</span></button>
+            <span>Studio film · Social-first</span>
+            <p>A vertical, social-native brand film.</p>
+          </div>
+        </article>
+          <div class="tile">
+            <p class="script script--sm">Have a project in mind?</p>
+            <p>Let's talk.</p>
+            <a class="btn" href="contact.html">Discuss a project <span class="arr">&rarr;</span></a>
+          </div>
+        </div>
+        <div class="work-col">
+          <article class="film film--myai" id="myai">
+          <button class="thumb" style="--ar:16 / 9" data-video="assets/video/myai.mp4" data-title="MyAI Academy — Brand film" data-ratio="16 / 9" data-preview="assets/video/myai-loop.mp4" aria-label="Play MyAI Academy — Brand film"><img src="assets/img/work-myai.jpg" alt="A man at a café table choosing what he wants to achieve with AI" loading="lazy"><span class="play">Play film</span></button>
+          <div class="caption">
+            <h2 class="h3">MyAI Academy</h2>
+            <button class="link ul" data-open-film>Watch <span class="arr">&rarr;</span></button>
+            <span>Client work · Brand film</span>
+            <p>A film to introduce a new era of AI learning. Now live on myaicademy.com.</p>
+          </div>
+        </article>
+          <article class="film film--velocity" id="velocity">
+          <button class="thumb" style="--ar:1536 / 1024" data-video="assets/video/velocity.mp4" data-title="Velocity Energy — Product film" data-ratio="1260 / 720" data-preview="" aria-label="Play Velocity Energy — Product film"><img src="assets/img/work-velocity.jpg" alt="Velocity Energy brand design board: logo, packaging, colour and typography system" loading="lazy"><span class="play">Play film</span></button>
+          <div class="caption">
+            <h2 class="h3">Velocity Energy</h2>
+            <button class="link ul" data-open-film>Watch <span class="arr">&rarr;</span></button>
+            <span>Brand design system · Product at scale</span>
+            <p>A cinematic product film — a look built to repeat across a whole catalog.</p>
+          </div>
+        </article>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+<dialog class="modal" id="video-modal" aria-label="Video player">
+  <button class="modal-close" aria-label="Close video">&times;</button>
+  <div class="modal-stage"></div>
+  <div class="modal-bar">
+    <span><span class="modal-title"></span><span class="count"></span></span>
+    <div class="modal-nav">
+      <button class="prev" aria-label="Previous film">&larr;</button>
+      <button class="next" aria-label="Next film">&rarr;</button>
+    </div>
+  </div>
+</dialog>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <img class="footer-logo" src="assets/img/logo-lockup.svg" alt="South of Somewhere — The Creative Intelligence Studio" width="420" height="292">
+      <div class="footer-cols">
+        <div>
+          <h2>Studio</h2>
+          <ul>
+            <li><a class="ul" href="index.html">Home</a></li>
+            <li><a class="ul" href="work.html">Work</a></li>
+            <li><a class="ul" href="offers.html">Offers</a></li>
+            <li><a class="ul" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Say hello</h2>
+          <ul>
+            <li><a class="ul" href="mailto:admin@southofsomewhere.studio">admin@southofsomewhere.studio</a></li>
+            <li><a class="ul" href="https://www.instagram.com/southofsomewhere.studio/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a class="ul" href="https://www.linkedin.com/company/south-of-somewhere-studio/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; <span data-year>2026</span> South of Somewhere</span>
+      <span>Working worldwide</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

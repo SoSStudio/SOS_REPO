@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — South of Somewhere</title>
+  <meta name="description" content="Tell us about your project, your goals and the story you want to tell. Most inquiries are answered within 1–2 business days.">
+  <meta property="og:title" content="Contact — South of Somewhere">
+  <meta property="og:description" content="Tell us about your project, your goals and the story you want to tell. Most inquiries are answered within 1–2 business days.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://southofsomewhere.studio/assets/img/og.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="theme-color" content="#e9e6de">
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="assets/fonts/amatic-sc.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/lora-var.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<header class="site-header">
+  <div class="wrap nav">
+    <a class="brand" href="index.html" aria-label="South of Somewhere, home">
+      <img src="assets/img/logo-mark.svg" alt="" width="30" height="42">
+      <span>South of Somewhere</span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" aria-controls="site-nav"><span></span></button>
+    <nav class="nav-links" id="site-nav" aria-label="Main">
+      <a class="ul" href="index.html">Home</a>
+      <a class="ul" href="work.html">Work</a>
+      <a class="ul" href="offers.html">Offers</a>
+      <a class="ul" href="contact.html" aria-current="page">Contact</a>
+      <a class="btn btn--sm" href="contact.html">Start a project <span class="arr">&rarr;</span></a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap contact">
+    <div class="contact-side">
+      <p class="script script--sm">Get in touch</p>
+      <h1 class="h1">Start a<br>conversation.</h1>
+      <p class="lead">Tell us about your project, your goals and the story you want to tell. Most inquiries are answered within 1–2 business days.</p>
+      <div class="direct">
+        <a class="ul" href="mailto:admin@southofsomewhere.studio">admin@southofsomewhere.studio</a>
+        <p class="meta">Working worldwide.</p>
+      </div>
+      <p class="script script--sm">Ideas travel further from here.</p>
+    </div>
+
+    <!--
+      FORM SETUP: create a free form at formspree.io (or Netlify Forms), then paste its URL into data-endpoint.
+      Until then, "Send inquiry" opens the visitor's email app with everything pre-filled, so nothing is lost.
+    -->
+    <form id="inquiry-form" data-endpoint="https://formspree.io/f/YOUR_FORM_ID" novalidate>
+      <div class="form-grid">
+        <div class="field">
+          <label for="name">Name</label>
+          <input id="name" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+        </div>
+        <div class="field">
+          <label for="email">Email</label>
+          <input id="email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required>
+        </div>
+        <div class="field full">
+          <label for="company">Company <span class="opt">(optional)</span></label>
+          <input id="company" name="company" type="text" placeholder="Your company" autocomplete="organization">
+        </div>
+      </div>
+
+      <fieldset class="fieldset">
+        <legend class="legend">What do you need?</legend>
+        <div class="choices">
+          <label class="choice"><input type="radio" name="project_type" value="Creative Systems" data-key="creative-systems" required><b>Creative Systems</b><small>Brand story, identity and a system that scales</small><span class="tick" aria-hidden="true"></span></label>
+          <label class="choice"><input type="radio" name="project_type" value="Social-first Campaigns &amp; Shows" data-key="social-first" required><b>Social-first Campaigns &amp; Shows</b><small>Campaigns, commercials and social-native series</small><span class="tick" aria-hidden="true"></span></label>
+          <label class="choice"><input type="radio" name="project_type" value="Product Photos &amp; Video at Scale" data-key="product-at-scale" required><b>Product Photos &amp; Video at Scale</b><small>Catalog, e-commerce and campaign content</small><span class="tick" aria-hidden="true"></span></label>
+          <label class="choice"><input type="radio" name="project_type" value="Something else" data-key="other" required><b>Something else</b><small>Tell us what you have in mind</small><span class="tick" aria-hidden="true"></span></label>
+        </div>
+      </fieldset>
+
+      <div class="field fieldset">
+        <label for="brief">Your brief</label>
+        <p class="hint" id="brief-hint">Tell us about your project, your goals and any details that matter.</p>
+        <textarea id="brief" name="brief" aria-describedby="brief-hint" placeholder="Start anywhere…" required></textarea>
+      </div>
+
+      <fieldset class="fieldset">
+        <legend class="legend">Budget <span class="opt">(optional)</span></legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="budget" value="Under $5k"><span>Under $5k</span></label>
+          <label class="chip"><input type="radio" name="budget" value="$5k–15k"><span>$5k–15k</span></label>
+          <label class="chip"><input type="radio" name="budget" value="$15k–50k"><span>$15k–50k</span></label>
+          <label class="chip"><input type="radio" name="budget" value="$50k+"><span>$50k+</span></label>
+          <label class="chip"><input type="radio" name="budget" value="Not sure yet"><span>Not sure yet</span></label>
+        </div>
+      </fieldset>
+
+      <fieldset class="fieldset">
+        <legend class="legend">Timeline <span class="opt">(optional)</span></legend>
+        <div class="chips">
+          <label class="chip"><input type="radio" name="timeline" value="As soon as possible"><span>As soon as possible</span></label>
+          <label class="chip"><input type="radio" name="timeline" value="Within a month"><span>Within a month</span></label>
+          <label class="chip"><input type="radio" name="timeline" value="1–3 months"><span>1–3 months</span></label>
+          <label class="chip"><input type="radio" name="timeline" value="Flexible"><span>Flexible</span></label>
+        </div>
+      </fieldset>
+
+      <div class="trap" aria-hidden="true"><label>Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label></div>
+      <div class="form-actions">
+        <button class="btn" type="submit">Send inquiry <span class="arr">&rarr;</span></button>
+        <span class="meta">Most inquiries answered within 1–2 business days.</span>
+      </div>
+      <p class="form-status" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</main>
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-top">
+      <img class="footer-logo" src="assets/img/logo-lockup.svg" alt="South of Somewhere — The Creative Intelligence Studio" width="420" height="292">
+      <div class="footer-cols">
+        <div>
+          <h2>Studio</h2>
+          <ul>
+            <li><a class="ul" href="index.html">Home</a></li>
+            <li><a class="ul" href="work.html">Work</a></li>
+            <li><a class="ul" href="offers.html">Offers</a></li>
+            <li><a class="ul" href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h2>Say hello</h2>
+          <ul>
+            <li><a class="ul" href="mailto:admin@southofsomewhere.studio">admin@southofsomewhere.studio</a></li>
+            <li><a class="ul" href="https://www.instagram.com/southofsomewhere.studio/" target="_blank" rel="noopener">Instagram</a></li>
+            <li><a class="ul" href="https://www.linkedin.com/company/south-of-somewhere-studio/" target="_blank" rel="noopener">LinkedIn</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="footer-base">
+      <span>&copy; <span data-year>2026</span> South of Somewhere</span>
+      <span>Working worldwide</span>
+    </div>
+  </div>
+</footer>
+<script src="assets/js/main.js" defer></script>
+</body>
+</html>

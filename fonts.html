@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Font playground — South of Somewhere</title>
+  <link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+  <!-- The preview below uses the site's real stylesheet, so what you see is what the site will look like. -->
+  <link rel="stylesheet" href="assets/css/styles.css">
+  <style>
+    /* ---------- Playground chrome (deliberately not using the site fonts) ---------- */
+    .pg, .pg * { font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    body { padding-top: 0; }
+    .pg { position: fixed; inset: 0 auto 0 0; width: 360px; overflow-y: auto; background: #f4f2ec; border-right: 1px solid rgba(9,9,9,.18); padding: 20px 20px 40px; z-index: 50; font-size: 13px; line-height: 1.45; color: #282727; }
+    .pg h1 { font-size: 15px; margin: 0 0 2px; font-weight: 650; color: #090909; -webkit-text-stroke: 0; text-transform: none; letter-spacing: 0; line-height: 1.3; }
+    .pg .sub { color: #55524d; margin: 0 0 16px; }
+    .pg fieldset { border: 0; border-top: 1px solid rgba(9,9,9,.16); margin: 0 0 6px; padding: 14px 0 8px; min-width: 0; }
+    .pg legend { font-weight: 650; font-size: 12px; letter-spacing: .06em; text-transform: uppercase; color: #090909; padding: 0 0 8px; float: left; width: 100%; margin: 0 0 8px; }
+    .pg label { display: grid; gap: 4px; margin: 0 0 10px; font-size: 12px; color: #55524d; clear: both; }
+    .pg label .val { float: right; color: #090909; font-variant-numeric: tabular-nums; }
+    .pg select, .pg input[type="text"] { width: 100%; padding: 8px 10px; border: 1px solid rgba(9,9,9,.3); background: #fff; font-size: 13px; color: #090909; border-radius: 4px; }
+    .pg input[type="range"] { width: 100%; accent-color: #090909; }
+    .pg .row2 { display: flex; gap: 8px; align-items: center; margin-bottom: 10px; clear: both; }
+    .pg button { border: 1px solid rgba(9,9,9,.35); background: #fff; color: #090909; padding: 7px 11px; font-size: 12px; border-radius: 4px; cursor: pointer; }
+    .pg button:hover { background: #090909; color: #fff; }
+    .pg button.primary { background: #090909; color: #fff; }
+    .pg .status { font-size: 11px; color: #55524d; min-height: 1.4em; margin: -4px 0 8px; clear: both; }
+    .pg .status.err { color: #8c2f1f; }
+    .pg .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 8px; clear: both; }
+    .pg .seg { display: inline-flex; border: 1px solid rgba(9,9,9,.3); border-radius: 4px; overflow: hidden; }
+    .pg .seg button { border: 0; border-radius: 0; background: #fff; }
+    .pg .seg button[aria-pressed="true"] { background: #090909; color: #fff; }
+    .pg textarea { width: 100%; height: 150px; font: 11.5px/1.5 ui-monospace, Menlo, Consolas, monospace !important; padding: 8px; border: 1px solid rgba(9,9,9,.3); border-radius: 4px; background: #fff; }
+    .pg small { color: #77746d; display: block; margin-top: 4px; }
+
+    .stage { margin-left: 360px; container-type: inline-size; padding: 0 0 80px; }
+    .stage .tag { display: inline-block; margin: 56px 0 18px; padding: 3px 9px; border: 1px solid rgba(9,9,9,.3); border-radius: 999px; font: 600 10.5px/1.5 system-ui, sans-serif; letter-spacing: .08em; text-transform: uppercase; color: #55524d; }
+    .stage .tag:first-child { margin-top: 28px; }
+    .stage .wrap { width: min(1100px, 100% - 64px); }
+    .stage hr { border: 0; border-top: 1px solid rgba(9,9,9,.14); margin: 64px 0 0; }
+    .spec { display: grid; gap: 14px; }
+    .spec .big { font-size: clamp(2rem, 6cqw, 4.4rem); line-height: 1.1; color: #090909; word-break: break-word; }
+    .spec .glyphs { font-size: 1.6rem; line-height: 1.5; color: #090909; letter-spacing: .04em; }
+    .ref { display: flex; gap: 32px; align-items: center; flex-wrap: wrap; }
+    .ref img { width: 230px; height: auto; }
+    .ref p { max-width: 30em; color: #55524d; font-size: 14px; }
+
+    /* Live-editable overrides (values are set from the panel). Sizes track the stage width. */
+    .stage .hero { padding-top: 12px; }
+    .stage .h1 { font-size: calc(min(7.6cqw, 7.2rem) * var(--d-scale, 1)); }
+    .stage .h2 { font-size: calc(min(5cqw, 4.6rem) * var(--d-scale, 1)); }
+    .stage .row .h2 { font-size: calc(min(3.6cqw, 3.3rem) * var(--d-scale, 1)); }
+    .stage .h3 { font-size: calc(min(2.8cqw, 2.5rem) * var(--d-scale, 1)); }
+    .stage .brand span { font-size: calc(2.05rem * var(--d-scale, 1)); }
+    .stage .script { font-size: calc(min(5.6cqw, 5.4rem) * var(--s-scale, 1)); }
+    .stage .script--sm { font-size: calc(min(2.6cqw, 2.5rem) * var(--s-scale, 1)); }
+    .stage .statement p { font-size: min(3.1cqw, 2.8rem); }
+    .stage .display, .stage .h1, .stage .h2, .stage .h3, .stage .brand span {
+      font-weight: var(--d-w, 400); text-transform: var(--d-case, uppercase);
+      letter-spacing: var(--d-ls, .01em); -webkit-text-stroke: var(--d-stroke, .005em) currentColor;
+    }
+    .stage .display, .stage .h1, .stage .h2, .stage .h3 { line-height: var(--d-lh, 1.04); }
+    .stage .script { line-height: 1.1; }
+    body { font-size: var(--b-size, 1.125rem); line-height: var(--b-lh, 1.7); }
+    .stage .site-demo-header { display: flex; align-items: center; justify-content: space-between; height: 80px; }
+    @media (max-width: 900px) { .pg { position: static; width: auto; } .stage { margin-left: 0; } }
+  </style>
+</head>
+<body>
+
+<aside class="pg" aria-label="Font controls">
+  <h1>Font playground</h1>
+  <p class="sub">Change anything — the page on the right updates live. Nothing here changes your site until you send me the choices (or paste the CSS).</p>
+
+  <div class="row2">
+    <button id="shuffle" class="primary">Shuffle pairing</button>
+    <button id="reset">Reset</button>
+  </div>
+  <label>Starting points
+    <select id="preset"></select>
+  </label>
+
+  <fieldset>
+    <legend>Headlines (display)</legend>
+    <label>Font <select id="d-font"></select></label>
+    <div class="row2"><input type="text" id="d-custom" placeholder="Any Google Font name…"><button id="d-load">Load</button></div>
+    <div class="row2"><button id="d-upload-btn">Upload a font file…</button><input type="file" id="d-file" accept=".ttf,.otf,.woff,.woff2" hidden></div>
+    <div class="status" id="d-status"></div>
+    <label>Weight <span class="val" id="d-w-val">400</span><input type="range" id="d-w" min="100" max="900" step="100" value="400"></label>
+    <label>Size <span class="val" id="d-scale-val">1.00×</span><input type="range" id="d-scale" min="0.6" max="1.4" step="0.02" value="1"></label>
+    <label>Line height <span class="val" id="d-lh-val">1.04</span><input type="range" id="d-lh" min="0.85" max="1.4" step="0.01" value="1.04"></label>
+    <label>Letter spacing <span class="val" id="d-ls-val">0.01em</span><input type="range" id="d-ls" min="-0.04" max="0.14" step="0.005" value="0.01"></label>
+    <label>Extra ink (outline) <span class="val" id="d-stroke-val">0.005em</span><input type="range" id="d-stroke" min="0" max="0.03" step="0.001" value="0.005"></label>
+    <div class="row2">Case
+      <span class="seg"><button id="case-up" aria-pressed="true">CAPS</button><button id="case-as" aria-pressed="false">As typed</button></span>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>Signature (script)</legend>
+    <label>Font <select id="s-font"></select></label>
+    <div class="row2"><input type="text" id="s-custom" placeholder="Any Google Font name…"><button id="s-load">Load</button></div>
+    <div class="row2"><button id="s-upload-btn">Upload a font file…</button><input type="file" id="s-file" accept=".ttf,.otf,.woff,.woff2" hidden></div>
+    <div class="status" id="s-status"></div>
+    <label>Size <span class="val" id="s-scale-val">1.00×</span><input type="range" id="s-scale" min="0.6" max="1.6" step="0.02" value="1"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Reading text (body)</legend>
+    <label>Font <select id="b-font"></select></label>
+    <div class="row2"><input type="text" id="b-custom" placeholder="Any Google Font name…"><button id="b-load">Load</button></div>
+    <div class="row2"><button id="b-upload-btn">Upload a font file…</button><input type="file" id="b-file" accept=".ttf,.otf,.woff,.woff2" hidden></div>
+    <div class="status" id="b-status"></div>
+    <label>Size <span class="val" id="b-size-val">18px</span><input type="range" id="b-size" min="16" max="21" step="0.5" value="18"></label>
+    <label>Line height <span class="val" id="b-lh-val">1.70</span><input type="range" id="b-lh" min="1.4" max="1.9" step="0.02" value="1.7"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Take it with you</legend>
+    <div class="row2"><button id="copy-claude" class="primary">Copy for Claude</button><button id="copy-css">Copy CSS</button></div>
+    <div class="status" id="copy-status"></div>
+    <textarea id="out" readonly aria-label="Your current choices"></textarea>
+    <small>“Copy for Claude”: paste it into our chat and I’ll apply it as v5, self-hosting the fonts. Uploaded files can’t be copied — send me the file itself.</small>
+  </fieldset>
+</aside>
+
+<main class="stage">
+  <div class="wrap">
+    <span class="tag">Brand reference — the real logo fonts</span>
+    <div class="ref">
+      <img src="assets/img/logo-lockup.svg" alt="South of Somewhere logo lockup">
+      <p>Your logo uses <b>Louisville II</b> (headlines) and <b>Benedict</b> (script). If you own those files, upload them above (.ttf / .otf / .woff2) and you’ll see the real fonts on the real layout.</p>
+    </div>
+
+    <span class="tag">Home — header &amp; banner headline (auto-fits the width)</span>
+    <div class="site-demo-header">
+      <span class="brand"><img src="assets/img/logo-mark.svg" alt="" width="30" height="42"><span>South of Somewhere</span></span>
+      <span class="btn btn--sm">Start a project <span class="arr">&rarr;</span></span>
+    </div>
+    <section class="hero" id="live-hero">
+      <div class="banner-wrap"><h1 class="display banner"><span>The Creative</span> <span>Intelligence</span> <span>Studio.</span></h1></div>
+      <div class="hero-foot"><p>Timeless storytelling for the new era of communication.</p><div class="hero-actions"><span class="btn">Start a project <span class="arr">&rarr;</span></span></div></div>
+    </section>
+
+    <span class="tag">Home — statement</span>
+    <section class="statement" style="padding:0"><p>We help brands, founders and creators turn their story into impact — combining creative direction, design and production craft to build content that lasts, adapts and scales.</p></section>
+
+    <span class="tag">Home — what we do</span>
+    <div class="what-grid" style="grid-template-columns: .7fr 2fr">
+      <h2 class="h2">What we do</h2>
+      <div class="rows">
+        <a class="row" href="#"><h3 class="h2">Creative Systems</h3><p>From story to a system that scales.</p><span class="go">&rarr;</span></a>
+        <a class="row" href="#"><h3 class="h2">Social-first Campaigns &amp; Shows</h3><p>Content for culture. Built for what's next.</p><span class="go">&rarr;</span></a>
+        <a class="row" href="#"><h3 class="h2">Product Photos &amp; Video at Scale</h3><p>High-quality content. Made to move.</p><span class="go">&rarr;</span></a>
+      </div>
+    </div>
+
+    <span class="tag">Work — page heading &amp; caption</span>
+    <div class="page-head" style="padding:0 0 24px">
+      <p class="script script--sm" style="margin-bottom:26px">Selected work</p>
+      <h1 class="h1">Real stories.<br>Different worlds.</h1>
+      <p class="lead">A mix of client work and studio films — united by the same belief: better stories create a more interesting world.</p>
+    </div>
+    <div class="work-page" style="padding:0"><div class="film"><div class="caption" style="grid-template-columns:1fr auto;display:grid;gap:4px 24px;align-items:baseline">
+      <h2 class="h3">MyAI Academy</h2><span class="link">Watch <span class="arr">&rarr;</span></span>
+      <span style="grid-column:1/-1">Client work · Brand film</span>
+      <p style="grid-column:1/-1;color:var(--muted);font-size:1.0625rem">A film to introduce a new era of AI learning. Now live on myaicademy.com.</p>
+    </div></div></div>
+
+    <span class="tag">Closing &amp; signature</span>
+    <div class="closing-grid" style="padding-top:40px">
+      <p class="script">Always a way forward.</p>
+      <div class="closing-cta"><p>Ideas to execution.<br>Let's build what's next.</p><span class="btn">Start a project <span class="arr">&rarr;</span></span></div>
+    </div>
+
+    <span class="tag">Form &amp; small text</span>
+    <div style="max-width:640px">
+      <div class="form-grid" style="margin-bottom:28px">
+        <div class="field"><label>Name</label><input type="text" placeholder="Your name"></div>
+        <div class="field"><label>Email</label><input type="text" placeholder="you@email.com"></div>
+      </div>
+      <p class="legend">Budget <span class="opt">(optional)</span></p>
+      <div class="chips"><label class="chip"><span>Under $5k</span></label> <label class="chip"><span>$5k–15k</span></label> <label class="chip"><span>$15k–50k</span></label></div>
+      <p class="meta" style="margin-top:14px">Most inquiries answered within 1–2 business days.</p>
+    </div>
+
+    <span class="tag">Glyph check — headline &amp; signature fonts</span>
+    <div class="spec">
+      <div class="big display" style="font-size:clamp(2rem,6cqw,4.4rem)">Abcdefg &amp; Hijklmn — Opqrst? Uvwxyz! 0123456789 ’ “ ”</div>
+      <div class="big script" style="font-size:clamp(2rem,6cqw,4.4rem)">Ideas travel further &amp; further — always. 2026</div>
+    </div>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var $ = function (id) { return document.getElementById(id); };
+  var root = document.documentElement;
+
+  /* ---- Font catalogue. w: {v:[min,max]} = variable weights, {l:[...]} = fixed weights, absent = one weight ---- */
+  var LOCAL = { "Amatic SC": 1, "Zeyada": 1, "Lora": 1 };   // already self-hosted on the site
+  var DISPLAY = [
+    ["— Hand-drawn / pen (closest to your logo)", null],
+    ["Sue Ellen Francisco", "cursive"], ["Just Another Hand", "cursive"], ["Amatic SC", "cursive", { l: [400, 700] }],
+    ["Reenie Beanie", "cursive"], ["Nanum Pen Script", "cursive"], ["Covered By Your Grace", "cursive"], ["Shadows Into Light", "cursive"],
+    ["Patrick Hand SC", "cursive"], ["Caveat Brush", "cursive"], ["Gochi Hand", "cursive"], ["Sedgwick Ave Display", "cursive"],
+    ["— Condensed sans", null],
+    ["Antonio", "sans-serif", { v: [100, 700] }], ["Oswald", "sans-serif", { v: [200, 700] }], ["Big Shoulders Display", "sans-serif", { v: [100, 900] }],
+    ["Bebas Neue", "sans-serif"], ["League Gothic", "sans-serif"], ["Six Caps", "sans-serif"], ["Fjalla One", "sans-serif"],
+    ["Barlow Condensed", "sans-serif", { l: [200, 300, 400, 500, 600, 700] }], ["Saira Extra Condensed", "sans-serif", { l: [200, 300, 400, 500, 600, 700] }],
+    ["— Editorial serif", null],
+    ["Cormorant Garamond", "serif", { l: [300, 400, 500, 600, 700] }], ["Playfair Display", "serif", { v: [400, 900] }], ["Fraunces", "serif", { v: [100, 900] }],
+    ["Instrument Serif", "serif"], ["DM Serif Display", "serif"], ["Bodoni Moda", "serif", { v: [400, 900] }], ["Newsreader", "serif", { v: [200, 800] }],
+    ["Gloock", "serif"], ["Young Serif", "serif"], ["Italiana", "serif"], ["Marcellus", "serif"],
+    ["— Modern grotesk", null],
+    ["Syne", "sans-serif", { v: [400, 800] }], ["Bricolage Grotesque", "sans-serif", { v: [200, 800] }], ["Space Grotesk", "sans-serif", { v: [300, 700] }],
+    ["Outfit", "sans-serif", { v: [100, 900] }], ["Unbounded", "sans-serif", { v: [200, 900] }], ["Manrope", "sans-serif", { v: [200, 800] }]
+  ];
+  var SCRIPT = [
+    ["— Thin signature scripts (closest to your tagline)", null],
+    ["Mr De Haviland", "cursive"], ["Mrs Saint Delafield", "cursive"], ["Herr Von Muellerhoff", "cursive"], ["Monsieur La Doulaise", "cursive"],
+    ["Kristi", "cursive"], ["Waterfall", "cursive"], ["Whisper", "cursive"], ["Comforter", "cursive"], ["Licorice", "cursive"], ["Mea Culpa", "cursive"],
+    ["— Elegant scripts", null],
+    ["Allura", "cursive"], ["Alex Brush", "cursive"], ["Pinyon Script", "cursive"], ["Great Vibes", "cursive"], ["Sacramento", "cursive"],
+    ["Ballet", "cursive"], ["Birthstone", "cursive"], ["Petit Formal Script", "cursive"], ["Send Flowers", "cursive"], ["Ephesis", "cursive"],
+    ["— Handwritten", null],
+    ["Nothing You Could Do", "cursive"], ["La Belle Aurore", "cursive"], ["Over the Rainbow", "cursive"], ["Dawning of a New Day", "cursive"],
+    ["Zeyada", "cursive"], ["Homemade Apple", "cursive"], ["Waiting for the Sunrise", "cursive"], ["Square Peg", "cursive"], ["Caveat", "cursive", { v: [400, 700] }]
+  ];
+  var BODY = [
+    ["— Clean sans", null],
+    ["DM Sans", "sans-serif"], ["Inter", "sans-serif", { v: [100, 900] }], ["Manrope", "sans-serif", { v: [200, 800] }], ["Plus Jakarta Sans", "sans-serif", { v: [200, 800] }],
+    ["Poppins", "sans-serif", { l: [300, 400, 500, 600, 700] }], ["Outfit", "sans-serif", { v: [100, 900] }], ["Jost", "sans-serif", { v: [100, 900] }],
+    ["Figtree", "sans-serif", { v: [300, 900] }], ["Instrument Sans", "sans-serif", { v: [400, 700] }], ["Work Sans", "sans-serif", { v: [100, 900] }],
+    ["Albert Sans", "sans-serif", { v: [100, 900] }], ["Hanken Grotesk", "sans-serif", { v: [100, 900] }], ["Libre Franklin", "sans-serif", { v: [100, 900] }],
+    ["Onest", "sans-serif", { v: [100, 900] }], ["Geist", "sans-serif", { v: [100, 900] }], ["Urbanist", "sans-serif", { v: [100, 900] }], ["Public Sans", "sans-serif", { v: [100, 900] }],
+    ["Karla", "sans-serif", { v: [200, 800] }], ["IBM Plex Sans", "sans-serif", { l: [300, 400, 500, 600, 700] }], ["Space Grotesk", "sans-serif", { v: [300, 700] }],
+    ["— Readable serif", null],
+    ["Lora", "serif", { v: [400, 700] }], ["Newsreader", "serif", { v: [200, 800] }], ["Source Serif 4", "serif", { v: [200, 900] }]
+  ];
+
+  var PRESETS = [
+    { n: "Current site (Amatic SC + Zeyada + Lora)", d: "Amatic SC", s: "Zeyada", b: "Lora", dcase: "up", dw: 400, dscale: 0.78, bsize: 16.5 },
+    { n: "Previous look (Sue Ellen + Mr De Haviland + DM Sans)", d: "Sue Ellen Francisco", s: "Mr De Haviland", b: "DM Sans", dcase: "up" },
+    { n: "Tall & thin caps (Antonio, light)", d: "Antonio", s: "Mrs Saint Delafield", b: "DM Sans", dcase: "up", dw: 300, dls: 0.02, dscale: 0.92 },
+    { n: "Editorial serif (Instrument Serif)", d: "Instrument Serif", s: "Herr Von Muellerhoff", b: "Inter", dcase: "as", dls: -0.01, dlh: 1.0, dscale: 1.1, sscale: 1.15 },
+    { n: "Fine serif (Cormorant Garamond)", d: "Cormorant Garamond", s: "Mr De Haviland", b: "Manrope", dcase: "as", dw: 400, dlh: 1.0, dscale: 1.05 },
+    { n: "Modern grotesk (Syne)", d: "Syne", s: "Kristi", b: "Plus Jakarta Sans", dcase: "up", dw: 600, dls: 0, dscale: 0.72, dlh: 1.02 },
+    { n: "Pen lettering (Just Another Hand)", d: "Just Another Hand", s: "Waterfall", b: "Poppins", dcase: "up", dscale: 1.08 },
+    { n: "Brand-kit body (Poppins)", d: "Sue Ellen Francisco", s: "Mr De Haviland", b: "Poppins", dcase: "up" }
+  ];
+
+  var state = {};
+  function defaults() {
+    return { d: "Amatic SC", s: "Zeyada", b: "Lora", dw: 400, dscale: 0.78, dlh: 1.04, dls: 0.01, dstroke: 0.005, dcase: "up", sscale: 1, bsize: 16.5, blh: 1.7 };
+  }
+  state = defaults();
+  var uploaded = { d: null, s: null, b: null };   // {name, family}
+
+  function find(list, name) { for (var i = 0; i < list.length; i++) if (list[i][0] === name) return list[i]; return null; }
+  function listFor(role) { return role === "d" ? DISPLAY : role === "s" ? SCRIPT : BODY; }
+  var VARS = { d: "--display", s: "--script", b: "--sans" };
+
+  function fillSelect(id, list) {
+    var sel = $(id), group = null;
+    list.forEach(function (f) {
+      if (f[1] === null) { group = document.createElement("optgroup"); group.label = f[0].replace(/^—\s*/, ""); sel.appendChild(group); return; }
+      var o = document.createElement("option"); o.value = f[0]; o.textContent = f[0] + (LOCAL[f[0]] ? "  ·  built in" : ""); (group || sel).appendChild(o);
+    });
+  }
+  fillSelect("d-font", DISPLAY); fillSelect("s-font", SCRIPT); fillSelect("b-font", BODY);
+  PRESETS.forEach(function (p, i) { var o = document.createElement("option"); o.value = i; o.textContent = p.n; $("preset").appendChild(o); });
+
+  /* ---- Loading Google Fonts on demand ---- */
+  var loaded = {};
+  function gUrl(name, w) {
+    var fam = name.trim().replace(/\s+/g, "+"), spec = "";
+    if (w && w.v) spec = ":wght@" + Math.max(w.v[0], 300) + ".." + w.v[1];
+    else if (w && w.l) spec = ":wght@" + w.l.join(";");
+    return "https://fonts.googleapis.com/css2?family=" + fam + spec + "&display=swap";
+  }
+  function setStatus(role, msg, err) { var el = $(role + "-status"); el.textContent = msg; el.classList.toggle("err", !!err); }
+  function ensureLoaded(role, name, w) {
+    return new Promise(function (resolve) {
+      if (LOCAL[name] || loaded[name] === "ok") { resolve(true); return; }
+      setStatus(role, "Loading " + name + "…");
+      var tryUrl = function (url, fallback) {
+        var l = document.createElement("link"); l.rel = "stylesheet"; l.href = url;
+        l.onload = function () {
+          var probe = (w && !fallback) ? "400 20px \"" + name + "\"" : "20px \"" + name + "\"";
+          (document.fonts && document.fonts.load ? document.fonts.load(probe, "Abc") : Promise.resolve()).then(function () { loaded[name] = "ok"; setStatus(role, name + " loaded."); resolve(true); }, function () { loaded[name] = "ok"; resolve(true); });
+        };
+        l.onerror = function () {
+          l.remove();
+          if (!fallback && (w)) { tryUrl(gUrl(name, null), true); }
+          else { setStatus(role, "Couldn’t load “" + name + "”. Check the spelling (it must be a Google Font) and your connection.", true); resolve(false); }
+        };
+        document.head.appendChild(l);
+      };
+      tryUrl(gUrl(name, w), false);
+    });
+  }
+
+  /* ---- Apply state to the page ---- */
+  function famCss(role) {
+    var u = uploaded[role];
+    if (u && state[role] === u.name) return "\"" + u.family + "\", " + (role === "b" ? "sans-serif" : role === "s" ? "cursive" : "sans-serif");
+    var f = find(listFor(role), state[role]);
+    var fb = f ? f[1] : (role === "s" ? "cursive" : "sans-serif");
+    return "\"" + state[role] + "\", " + fb;
+  }
+  function weightInfo() {
+    var f = find(DISPLAY, state.d), w = f && f[2];
+    var u = uploaded.d && state.d === uploaded.d.name;
+    var sl = $("d-w");
+    if (w && w.v) { sl.disabled = false; sl.min = w.v[0]; sl.max = w.v[1]; sl.step = 100; }
+    else if (w && w.l) { sl.disabled = false; sl.min = w.l[0]; sl.max = w.l[w.l.length - 1]; sl.step = 100; }
+    else { sl.disabled = true; }
+    if (sl.disabled) { $("d-w-val").textContent = "one weight"; }
+    else {
+      var v = Math.min(Math.max(state.dw, +sl.min), +sl.max);
+      if (w && w.l) { v = w.l.reduce(function (a, b) { return Math.abs(b - v) < Math.abs(a - v) ? b : a; }); }
+      state.dw = v; sl.value = v; $("d-w-val").textContent = v;
+    }
+  }
+  function apply() {
+    root.style.setProperty("--display", famCss("d"));
+    root.style.setProperty("--script", famCss("s"));
+    root.style.setProperty("--sans", famCss("b"));
+    var s = root.style;
+    weightInfo();
+    s.setProperty("--d-w", $("d-w").disabled ? 400 : state.dw);
+    s.setProperty("--d-scale", state.dscale); s.setProperty("--d-lh", state.dlh);
+    s.setProperty("--d-ls", state.dls + "em"); s.setProperty("--d-stroke", state.dstroke + "em");
+    s.setProperty("--d-case", state.dcase === "up" ? "uppercase" : "none");
+    s.setProperty("--s-scale", state.sscale);
+    s.setProperty("--b-size", state.bsize + "px"); s.setProperty("--b-lh", state.blh);
+    $("d-scale-val").textContent = state.dscale.toFixed(2) + "×";
+    $("d-lh-val").textContent = state.dlh.toFixed(2);
+    $("d-ls-val").textContent = state.dls.toFixed(3) + "em";
+    $("d-stroke-val").textContent = state.dstroke.toFixed(3) + "em";
+    $("s-scale-val").textContent = state.sscale.toFixed(2) + "×";
+    $("b-size-val").textContent = state.bsize + "px";
+    $("b-lh-val").textContent = state.blh.toFixed(2);
+    $("case-up").setAttribute("aria-pressed", state.dcase === "up");
+    $("case-as").setAttribute("aria-pressed", state.dcase !== "up");
+    output(); fitBanner();
+  }
+  function fitBanner() {
+    var b = document.querySelector('.banner'); if (!b) return;
+    var w = b.parentElement.clientWidth; b.style.fontSize = '100px'; b.style.whiteSpace = 'nowrap';
+    var r = document.createRange(); r.selectNodeContents(b); var tw = r.getBoundingClientRect().width;
+    if (tw > 0) b.style.fontSize = (100 * w / tw * 0.99).toFixed(1) + 'px';
+  }
+  window.addEventListener('resize', fitBanner);
+  if (document.fonts) { document.fonts.addEventListener('loadingdone', fitBanner); }
+
+  function pick(role, name, opts) {
+    var f = find(listFor(role), name);
+    var u = uploaded[role];
+    state[role] = name;
+    var sel = $(role + "-font");
+    if (![].some.call(sel.options, function (o) { return o.value === name; })) {
+      var o = document.createElement("option"); o.value = name; o.textContent = name + "  ·  custom"; sel.insertBefore(o, sel.firstChild);
+    }
+    sel.value = name;
+    var isUpload = u && u.name === name;
+    var p = isUpload ? Promise.resolve(true) : ensureLoaded(role, name, f && f[2]);
+    p.then(function (ok) { if (ok) { if (isUpload) setStatus(role, "Using your file: " + name); else if (LOCAL[name]) setStatus(role, ""); else setStatus(role, name + " loaded."); } apply(); });
+    apply();
+  }
+
+  /* ---- Wire controls ---- */
+  ["d", "s", "b"].forEach(function (role) {
+    $(role + "-font").addEventListener("change", function () { pick(role, this.value); });
+    $(role + "-load").addEventListener("click", function () { var v = $(role + "-custom").value.trim(); if (v) { pick(role, v); } });
+    $(role + "-custom").addEventListener("keydown", function (e) { if (e.key === "Enter") $(role + "-load").click(); });
+    $(role + "-upload-btn").addEventListener("click", function () { $(role + "-file").click(); });
+    $(role + "-file").addEventListener("change", function () {
+      var file = this.files[0]; if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function () {
+        var fam = "Uploaded " + role.toUpperCase() + " " + Date.now();
+        var ff = new FontFace(fam, reader.result);
+        ff.load().then(function () {
+          document.fonts.add(ff);
+          uploaded[role] = { name: file.name, family: fam };
+          pick(role, file.name);
+        }, function () { setStatus(role, "That file couldn’t be read as a font.", true); });
+      };
+      reader.readAsArrayBuffer(file);
+    });
+  });
+  function bindRange(id, key, parse) { $(id).addEventListener("input", function () { state[key] = parse(this.value); apply(); }); }
+  bindRange("d-w", "dw", Number); bindRange("d-scale", "dscale", parseFloat); bindRange("d-lh", "dlh", parseFloat);
+  bindRange("d-ls", "dls", parseFloat); bindRange("d-stroke", "dstroke", parseFloat); bindRange("s-scale", "sscale", parseFloat);
+  bindRange("b-size", "bsize", parseFloat); bindRange("b-lh", "blh", parseFloat);
+  $("case-up").addEventListener("click", function () { state.dcase = "up"; apply(); });
+  $("case-as").addEventListener("click", function () { state.dcase = "as"; apply(); });
+
+  function syncControls() {
+    $("d-scale").value = state.dscale; $("d-lh").value = state.dlh; $("d-ls").value = state.dls; $("d-stroke").value = state.dstroke;
+    $("s-scale").value = state.sscale; $("b-size").value = state.bsize; $("b-lh").value = state.blh;
+  }
+  function usePreset(p) {
+    var st = defaults(); st.d = p.d; st.s = p.s; st.b = p.b;
+    ["dw", "dscale", "dlh", "dls", "dstroke", "dcase", "sscale", "bsize", "blh"].forEach(function (k) { if (p[k] !== undefined) st[k] = p[k]; });
+    state = st; syncControls();
+    pick("d", st.d); pick("s", st.s); pick("b", st.b);
+  }
+  $("preset").addEventListener("change", function () { usePreset(PRESETS[this.value]); });
+  $("reset").addEventListener("click", function () { $("preset").value = 0; usePreset(PRESETS[0]); });
+  function rnd(list) { var real = list.filter(function (f) { return f[1] !== null; }); return real[Math.floor(Math.random() * real.length)]; }
+  $("shuffle").addEventListener("click", function () {
+    var d = rnd(DISPLAY), s = rnd(SCRIPT), b = rnd(BODY);
+    var st = defaults(); st.d = d[0]; st.s = s[0]; st.b = b[0];
+    var serif = d[1] === "serif"; st.dcase = serif ? "as" : "up"; st.dscale = d[1] === "sans-serif" ? 0.85 : 1; st.dlh = 1.04;
+    state = st; syncControls(); pick("d", st.d); pick("s", st.s); pick("b", st.b);
+  });
+
+  /* ---- Output ---- */
+  function output() {
+    var d = state.d, s = state.s, b = state.b;
+    var f = find(DISPLAY, d), fs = find(SCRIPT, s), fb = find(BODY, b);
+    var upD = uploaded.d && d === uploaded.d.name, upS = uploaded.s && s === uploaded.s.name, upB = uploaded.b && b === uploaded.b.name;
+    var nm = function (n, up) { return up ? "(uploaded file: " + n + ")" : n; };
+    var css = ":root {\n  --display: \"" + (upD ? "YOUR-DISPLAY-FONT" : d) + "\", " + (f ? f[1] : "sans-serif") + ";\n  --script: \"" + (upS ? "YOUR-SCRIPT-FONT" : s) + "\", " + (fs ? fs[1] : "cursive") + ";\n  --sans: \"" + (upB ? "YOUR-BODY-FONT" : b) + "\", " + (fb ? fb[1] : "sans-serif") + ";\n}\n" +
+      ".display, .h1, .h2, .h3, .brand span {\n  font-weight: " + ($("d-w").disabled ? 400 : state.dw) + ";\n  text-transform: " + (state.dcase === "up" ? "uppercase" : "none") + ";\n  letter-spacing: " + state.dls.toFixed(3) + "em;\n  -webkit-text-stroke: " + state.dstroke.toFixed(3) + "em currentColor;\n  line-height: " + state.dlh.toFixed(2) + ";\n}\n" +
+      "/* size: headlines x" + state.dscale.toFixed(2) + ", script x" + state.sscale.toFixed(2) + ", body " + state.bsize + "px / " + state.blh.toFixed(2) + " */";
+    var note = "FONT CHOICES for South of Somewhere (apply as v5, self-host the fonts)\n" +
+      "Headlines: " + nm(d, upD) + " — weight " + ($("d-w").disabled ? "regular" : state.dw) + ", " + (state.dcase === "up" ? "ALL CAPS" : "as typed") + ", size x" + state.dscale.toFixed(2) + ", line-height " + state.dlh.toFixed(2) + ", letter-spacing " + state.dls.toFixed(3) + "em, extra ink " + state.dstroke.toFixed(3) + "em\n" +
+      "Signature script: " + nm(s, upS) + " — size x" + state.sscale.toFixed(2) + "\n" +
+      "Body: " + nm(b, upB) + " — " + state.bsize + "px, line-height " + state.blh.toFixed(2) + "\n" +
+      ((upD || upS || upB) ? "NOTE: I uploaded my own font file(s) — I will send them separately.\n" : "");
+    $("out").value = note + "\n" + css;
+    $("out")._css = css; $("out")._note = note;
+  }
+  function copy(text, msg) {
+    var done = function () { $("copy-status").textContent = msg; setTimeout(function () { $("copy-status").textContent = ""; }, 2200); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done, function () { $("out").select(); document.execCommand("copy"); done(); });
+    else { $("out").select(); document.execCommand("copy"); done(); }
+  }
+  $("copy-claude").addEventListener("click", function () { copy($("out").value, "Copied — paste it into our chat."); });
+  $("copy-css").addEventListener("click", function () { copy($("out")._css, "CSS copied."); });
+
+  usePreset(PRESETS[0]);
+})();
+</script>
+</body>
+</html>
