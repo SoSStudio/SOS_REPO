@@ -1,47 +1,43 @@
-# South of Somewhere — website (final pass)
+# South of Somewhere — website
 
-Plain HTML / CSS / JS. No build step. Push to git and deploy as static files (Hostinger via git works as is).
+Static site. No build step, no dependencies. `index.html` is the whole page; `img/`, `vid/`, `brand/` hold its media.
 
-```
-index.html  work.html  offers.html  contact.html
-assets/
-  css/styles.css     colours, type and spacing tokens are at the top
-  js/main.js         nav, showreel, hover previews, lightbox, offers sub-nav, contact form
-  fonts/             self-hosted fonts + licences
-  img/               logo (SVG), stills, favicon, share image
-  video/             web-optimised films + short hover loops
-```
-Preview: `python3 -m http.server` in this folder.
+## Deploy with git (for Suki)
 
-## Look
-- One canvas: `#e9e6de` (the logo's own canvas, so nothing ever sits in a box). Ink `#090909`, text `#282727`. Dark appears only where the footage itself is dark.
-- Logos are vectors with transparent backgrounds (`logo-lockup.svg` in the footer, `logo-mark.svg` in the header), traced from the supplied artwork.
-- Fonts (chosen in the playground): Amatic SC for headlines (caps, ×0.78 size), Zeyada for the script, Lora for reading text at 16.5px. All open licence, self-hosted, licences in `assets/fonts/`.
-  Licensed brand fonts later: drop the files in `assets/fonts/` and uncomment the two `@font-face` blocks at the top of `styles.css` (the stacks already list them first).
+1. Create an empty GitHub repo, e.g. `southofsomewhere-site` (private is fine).
+2. In this folder run:
+   ```
+   git init
+   git add .
+   git commit -m "South of Somewhere site v1"
+   git branch -M main
+   git remote add origin https://github.com/<account>/southofsomewhere-site.git
+   git push -u origin main
+   ```
+3. Connect the repo to a static host. Recommended: **Cloudflare Pages** (free).
+   - Cloudflare dashboard → Workers & Pages → Create → Pages → Connect to Git → pick the repo.
+   - Framework preset: **None**. Build command: **leave empty**. Build output directory: **/** (root).
+   - Deploy. You get a `*.pages.dev` preview URL.
+4. Custom domain: Pages project → Custom domains → add `southofsomewhere.studio` (and `www`). Follow the DNS steps it shows.
+   Alternatives that work the same way: Netlify (publish directory `/`, no build) or GitHub Pages (Settings → Pages → Deploy from branch `main`, folder `/root`).
+5. Every later change: edit, `git commit`, `git push` — the host redeploys automatically.
 
-## Media is never cropped
-Every film thumbnail takes its shape from its own ratio (`--ar`), and the lightbox reads `data-ratio`, so vertical films play as vertical.
-To add or swap a film, edit its `.thumb` button:
+## After the first deploy (one-time)
+- **Contact form** sends through FormSubmit to `admin@southofsomewhere.studio`. Send one test message from the LIVE site. FormSubmit emails admin@ an activation link — click it once. After that, every message lands in that inbox.
+- Check the three footer icons open Instagram, LinkedIn and X.
 
-| Attribute | Meaning |
-|---|---|
-| `data-video` | file in `assets/video/`, or a YouTube / Vimeo link |
-| `data-ratio` | the film's shape, e.g. `16 / 9` or `9 / 16` |
-| `data-preview` | optional muted 4–5 s loop for hover (keep under 1 MB) |
-| `style="--ar:…"` + the `img` | the still — same shape as `data-ratio` |
+## If the domain changes (.studio → .com)
+Search `index.html` for `southofsomewhere.studio` and replace (footer, contact email, form address). Do NOT change the Instagram link (that handle really is `southofsomewhere.studio`).
 
-Films in the folder: `penguin.mp4` (home showreel, 2.39:1), `myai.mp4`, `brand-mv.mp4` (9:16), `velocity.mp4`, plus `myai-loop.mp4` / `brand-mv-loop.mp4` hover previews.
-The Velocity still is the brand design board (3:2) while its film is 1.75:1 — that's why the still's shape (`--ar` on the button) and the film's shape (`data-ratio`) are set separately.
-The original 166 MB `.mov` masters are not in this folder — keep them elsewhere.
+## What's where
+| Part | File |
+| --- | --- |
+| Hero scroll film (6 stills) | `img/01,02,05,06,07,08_*_16x9.webp` + `_9x16` for phones |
+| Statics | `img/still_offer_4x5.webp`, `img/still_kv_4x5.webp` |
+| Films | `vid/film_myaicademy_16x9.mp4` |
+| Motion | `vid/motion_oil_9x16.mp4` |
+| Remix | `img/05_stay_window_*` |
+| Logo / favicon | `brand/mark.png`, `brand/lockup.png` |
+| Share image | `img/og_1200x630.jpg` |
 
-## Contact form
-Wired for Formspree. Create a form and paste its URL into `data-endpoint` in `contact.html`. Until then "Send inquiry" opens the visitor's email app with everything filled in.
-
-## Layout notes
-Hero: one-line banner headline that always spans the full width, with the film directly below it. Home and Work share one balanced composition: a tall film beside a stack of wide ones.
-
-## Motion
-One calm entrance on the home hero. The showreel plays only while visible and is a still frame for visitors who prefer reduced motion. The native cursor and native scrolling are never modified.
-
-## Font playground (working tool, not part of the site)
-`fonts.html` previews any Google Font (or an uploaded .ttf/.otf/.woff2) on the real site styles, live. It is `noindex` and not linked from the nav, but delete it before launch if you'd rather not publish it.
+Fonts (Louisville II, Benedict) are embedded inside `index.html`; Poppins and JetBrains Mono load from Google Fonts.
